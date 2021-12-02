@@ -35,7 +35,7 @@ fn main() {
     use std::fs::File;
     use std::io::BufWriter;
     use std::io::{Error, Write};
-    let meshfile = File::create("trans.dat").unwrap();
+    let meshfile = File::create("lap2d.dat").unwrap();
     let mut meshfile = BufWriter::new(meshfile); // create a buffer for faster writes...
     xp.iter().for_each(|x| {
         writeln!(meshfile, "{}", x).unwrap();
