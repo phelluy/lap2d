@@ -2,7 +2,7 @@ from matplotlib.pyplot import *
 from math import *
 import numpy as np
 
-with open("lap2d.dat", "r") as f:
+with open("plotpy.dat", "r") as f:
     contenu = f.read().split("\n\n")
     # print(contenu)
 

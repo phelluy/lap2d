@@ -18,21 +18,21 @@ fn main() {
     let lx = 1.;
     let ly = 2.;
 
-    let nx = 30;
-    let ny = 120;
+    let nx = 2;
+    let ny = 4;
 
     let dx = lx / nx as f64;
     let dy = ly / ny as f64;
 
     fn f(x: f64, y: f64) -> f64 {
         let pi = std::f64::consts::PI;
-        x * x * x + (2. * pi * y).sin()
+        x + y
     }
 
     let xp: Vec<f64> = (0..nx + 1).map(|i| i as f64 * dx).collect();
     let yp: Vec<f64> = (0..ny + 1).map(|i| i as f64 * dy).collect();
 
-    let mut zp: Vec<f64>=[].to_vec();
+    let mut zp: Vec<f64> = [].to_vec();
 
     yp.iter().for_each(|y| {
         xp.iter().for_each(|x| {
@@ -47,23 +47,25 @@ fn plotpy(xp: Vec<f64>, yp: Vec<f64>, zp: Vec<f64>) {
     use std::fs::File;
     use std::io::BufWriter;
     use std::io::Write;
-    let meshfile = File::create("plotpy.dat").unwrap();
-    let mut meshfile = BufWriter::new(meshfile); // create a buffer for faster writes...
-    xp.iter().for_each(|x| {
-        writeln!(meshfile, "{}", x).unwrap();
-    });
-    writeln!(meshfile, "").unwrap();
-    yp.iter().for_each(|y| {
-        writeln!(meshfile, "{}", y).unwrap();
-    });
-    writeln!(meshfile, "").unwrap();
-    zp.iter().for_each(|z| {
-        writeln!(meshfile, "{}", z).unwrap();
-    });
+    {
+        let meshfile = File::create("plotpy.dat").unwrap();
+        let mut meshfile = BufWriter::new(meshfile); // create a buffer for faster writes...
+        xp.iter().for_each(|x| {
+            writeln!(meshfile, "{}", x).unwrap();
+        });
+        writeln!(meshfile, "").unwrap();
+        yp.iter().for_each(|y| {
+            writeln!(meshfile, "{}", y).unwrap();
+        });
+        writeln!(meshfile, "").unwrap();
+        zp.iter().for_each(|z| {
+            writeln!(meshfile, "{}", z).unwrap();
+        });
+    } // ensures that the file is closed
 
     use std::process::Command;
     Command::new("python3")
-    .arg("src/plot.py")
-    .status()
-    .expect("plot failed !");
+        .arg("src/plot.py")
+        .status()
+        .expect("plot failed !");
 }
