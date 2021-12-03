@@ -10,6 +10,10 @@ fn main() {
         (2, 2, -1.0),
     ]);
 
+    m.add_element(0, 0, 100.);
+
+    println!("{:?}",m.get(0,0));
+
     let soln = m.solve(vec![6.0, -4.0, 27.0]).unwrap();
     println!("{:?}", soln);
     // => vec![5.0, 3.0, -2.0]
