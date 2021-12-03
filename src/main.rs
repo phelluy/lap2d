@@ -1,50 +1,36 @@
 fn main() {
 
-    let mut vecval = vec![];
-
-    let n = 3;
-    for i in 0..n {
-        vecval.push((i,i,2.));
-    }
-
-    vecval[0] = (0,0,100.);
-
-    let mut m = sparse21::Matrix::from_entries(vecval);
-
-    // m.add_element(0, 0, 100.);
-
-    // println!("{:?}",m.get(0,0));
-    displaymat(n, &m);
-
-    let soln = m.solve(vec![1.,1.,1.]).unwrap();
-    println!("{:?}", soln);
-    // => vec![5.0, 3.0, -2.0]
-
     // plot2d example
     let lx = 1.;
-    let ly = 2.;
+    let ly = 1.;
 
-    let nx = 2;
-    let ny = 4;
+    let nx = 10;
+    let ny = 10;
 
     let dx = lx / nx as f64;
     let dy = ly / ny as f64;
 
-    fn f(x: f64, y: f64) -> f64 {
-        //let pi = std::f64::consts::PI;
-        x + y
+
+    let mut vecval = vec![];
+
+    let n = (nx+1)*(ny+1);
+    for k in 0..n {
+        vecval.push((k,k,4./dx/dy));
     }
+
+    let mut m = sparse21::Matrix::from_entries(vecval);
+
+    //displaymat(n, &m);
+
+    let zp = m.solve(vec![1.;n]).unwrap();
+    //println!("{:?}", soln);
+    // => vec![5.0, 3.0, -2.0]
+
+    // plot2d example
+
 
     let xp: Vec<f64> = (0..nx + 1).map(|i| i as f64 * dx).collect();
     let yp: Vec<f64> = (0..ny + 1).map(|i| i as f64 * dy).collect();
-
-    let mut zp: Vec<f64> = vec![];
-
-    yp.iter().for_each(|y| {
-        xp.iter().for_each(|x| {
-            zp.push(f(*x, *y));
-        });
-    });
 
     plotpy(xp, yp, zp);
 }
