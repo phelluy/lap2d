@@ -15,14 +15,14 @@ fn main() {
     // => vec![5.0, 3.0, -2.0]
 
     // plot2d example
-    let Lx = 1.;
-    let Ly = 2.;
+    let lx = 1.;
+    let ly = 2.;
 
     let nx = 30;
     let ny = 120;
 
-    let dx = Lx / nx as f64;
-    let dy = Ly / ny as f64;
+    let dx = lx / nx as f64;
+    let dy = ly / ny as f64;
 
     fn f(x: f64, y: f64) -> f64 {
         let pi = std::f64::consts::PI;
@@ -32,10 +32,22 @@ fn main() {
     let xp: Vec<f64> = (0..nx + 1).map(|i| i as f64 * dx).collect();
     let yp: Vec<f64> = (0..ny + 1).map(|i| i as f64 * dy).collect();
 
+    let mut zp: Vec<f64>=[].to_vec();
+
+    yp.iter().for_each(|y| {
+        xp.iter().for_each(|x| {
+            zp.push(f(*x, *y));
+        });
+    });
+
+    plotpy(xp, yp, zp);
+}
+
+fn plotpy(xp: Vec<f64>, yp: Vec<f64>, zp: Vec<f64>) {
     use std::fs::File;
     use std::io::BufWriter;
-    use std::io::{Error, Write};
-    let meshfile = File::create("lap2d.dat").unwrap();
+    use std::io::Write;
+    let meshfile = File::create("plotpy.dat").unwrap();
     let mut meshfile = BufWriter::new(meshfile); // create a buffer for faster writes...
     xp.iter().for_each(|x| {
         writeln!(meshfile, "{}", x).unwrap();
@@ -45,10 +57,13 @@ fn main() {
         writeln!(meshfile, "{}", y).unwrap();
     });
     writeln!(meshfile, "").unwrap();
-    yp.iter().for_each(|y| {
-        xp.iter().for_each(|x| {
-            writeln!(meshfile, "{}", f(*x,*y)).unwrap();
-        });
+    zp.iter().for_each(|z| {
+        writeln!(meshfile, "{}", z).unwrap();
     });
 
+    use std::process::Command;
+    Command::new("python3")
+    .arg("src/plot.py")
+    .status()
+    .expect("plot failed !");
 }
