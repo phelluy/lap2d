@@ -1,5 +1,4 @@
 fn main() {
-
     // plot2d example
     let lx = 1.;
     let ly = 1.;
@@ -10,24 +9,28 @@ fn main() {
     let dx = lx / nx as f64;
     let dy = ly / ny as f64;
 
-
     let mut vecval = vec![];
 
-    let n = (nx+1)*(ny+1);
+    let n = (nx + 1) * (ny + 1);
     for k in 0..n {
-        vecval.push((k,k,4./dx/dy));
+        let i = k % (nx + 1);
+        let j = k / (nx + 1);
+        if i == 0 || i == nx || j == 0 || j == ny {
+            vecval.push((k, k, 1e20));
+        } else {
+            vecval.push((k, k, 4. / dx / dy));
+        }
     }
 
     let mut m = sparse21::Matrix::from_entries(vecval);
 
     //displaymat(n, &m);
 
-    let zp = m.solve(vec![1.;n]).unwrap();
+    let zp = m.solve(vec![1.; n]).unwrap();
     //println!("{:?}", soln);
     // => vec![5.0, 3.0, -2.0]
 
     // plot2d example
-
 
     let xp: Vec<f64> = (0..nx + 1).map(|i| i as f64 * dx).collect();
     let yp: Vec<f64> = (0..ny + 1).map(|i| i as f64 * dy).collect();
@@ -35,14 +38,15 @@ fn main() {
     plotpy(xp, yp, zp);
 }
 
-fn displaymat(n:usize, m: & sparse21::Matrix){
+#[allow(dead_code)]
+fn displaymat(n: usize, m: &sparse21::Matrix) {
     for i in 0..n {
         for j in 0..n {
-            let val = match m.get(i,j) {
+            let val = match m.get(i, j) {
                 Some(v) => v,
                 None => 0.,
             };
-            print!("{} ",val);
+            print!("{} ", val);
         }
         println!();
     }
