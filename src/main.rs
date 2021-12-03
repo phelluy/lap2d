@@ -1,20 +1,22 @@
 fn main() {
-    let mut m = sparse21::Matrix::from_entries(vec![
-        (0, 0, 1.0),
-        (0, 1, 1.0),
-        (0, 2, 1.0),
-        (1, 1, 2.0),
-        (1, 2, 5.0),
-        (2, 0, 2.0),
-        (2, 1, 5.0),
-        (2, 2, -1.0),
-    ]);
 
-    m.add_element(0, 0, 100.);
+    let mut vecval = vec![];
 
-    println!("{:?}",m.get(0,0));
+    let n = 3;
+    for i in 0..n {
+        vecval.push((i,i,2.));
+    }
 
-    let soln = m.solve(vec![6.0, -4.0, 27.0]).unwrap();
+    vecval[0] = (0,0,100.);
+
+    let mut m = sparse21::Matrix::from_entries(vecval);
+
+    // m.add_element(0, 0, 100.);
+
+    // println!("{:?}",m.get(0,0));
+    displaymat(n, &m);
+
+    let soln = m.solve(vec![1.,1.,1.]).unwrap();
     println!("{:?}", soln);
     // => vec![5.0, 3.0, -2.0]
 
@@ -47,6 +49,20 @@ fn main() {
     plotpy(xp, yp, zp);
 }
 
+fn displaymat(n:usize, m: & sparse21::Matrix){
+    for i in 0..n {
+        for j in 0..n {
+            let val = match m.get(i,j) {
+                Some(v) => v,
+                None => 0.,
+            };
+            print!("{} ",val);
+        }
+        println!();
+    }
+}
+
+/// Plot a 2D data set using matplotlib
 fn plotpy(xp: Vec<f64>, yp: Vec<f64>, zp: Vec<f64>) {
     use std::fs::File;
     use std::io::BufWriter;
