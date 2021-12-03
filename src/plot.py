@@ -27,6 +27,9 @@ def quit_figure(event):
         close(event.canvas.figure)
 cid = gcf().canvas.mpl_connect('key_press_event', quit_figure)
 
-contourf(x,y,z,100)
+fig, ax = subplots()
+cs = ax.contourf(x,y,z,100)
+cbar = fig.colorbar(cs)
+
 print("press \'q\' to quit...");
 show()
