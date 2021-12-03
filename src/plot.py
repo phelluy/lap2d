@@ -22,10 +22,10 @@ z = np.array([float(z[i]) for i in range(nz)]).reshape((ny+1,nx+1))
 # print(z)
 # plot(xi, unum, color="blue")
 # plot(xi, uex, color="red")
-def quit_figure(event):
-    if event.key == 'q':
-        close(event.canvas.figure)
-cid = gcf().canvas.mpl_connect('key_press_event', quit_figure)
+# def quit_figure(event):
+#     if event.key == 'q':
+#         close(event.canvas.figure)
+# cid = gcf().canvas.mpl_connect('key_press_event', quit_figure)
 
 fig, ax = subplots()
 cs = ax.contourf(x,y,z,100)
