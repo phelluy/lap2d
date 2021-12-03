@@ -25,14 +25,14 @@ fn main() {
     let dy = ly / ny as f64;
 
     fn f(x: f64, y: f64) -> f64 {
-        let pi = std::f64::consts::PI;
+        //let pi = std::f64::consts::PI;
         x + y
     }
 
     let xp: Vec<f64> = (0..nx + 1).map(|i| i as f64 * dx).collect();
     let yp: Vec<f64> = (0..ny + 1).map(|i| i as f64 * dy).collect();
 
-    let mut zp: Vec<f64> = [].to_vec();
+    let mut zp: Vec<f64> = vec![];
 
     yp.iter().for_each(|y| {
         xp.iter().for_each(|x| {
