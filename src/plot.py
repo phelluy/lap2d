@@ -28,4 +28,5 @@ def quit_figure(event):
 cid = gcf().canvas.mpl_connect('key_press_event', quit_figure)
 
 contourf(x,y,z,100)
+print("press \'q\' to quit...");
 show()
