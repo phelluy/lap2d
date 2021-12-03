@@ -31,5 +31,5 @@ fig, ax = subplots()
 cs = ax.contourf(x,y,z,100)
 cbar = fig.colorbar(cs)
 
-print("press \'q\' to quit...");
+print("press \'q\' twice to quit...");
 show()
