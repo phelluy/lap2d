@@ -3,8 +3,8 @@ fn main() {
     let lx = 1.;
     let ly = 1.;
 
-    let nx = 10;
-    let ny = 10;
+    let nx = 50;
+    let ny = 50;
 
     let dx = lx / nx as f64;
     let dy = ly / ny as f64;
