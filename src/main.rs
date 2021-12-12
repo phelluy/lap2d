@@ -22,7 +22,25 @@ fn main() {
         }
     }
 
-    let mut m = sparse21::Matrix::from_entries(vecval);
+    for i in 0..nx {
+        for j in 0..ny + 1 {
+            let k1 = j * (nx + 1) + i;
+            let k2 = j * (nx + 1) + i + 1;
+            vecval.push((k1, k2, -1. / dx / dx));
+            vecval.push((k2, k1, -1. / dx / dx));
+        }
+    }
+
+    for j in 0..ny {
+        for i in 0..nx + 1 {
+            let k1 = j * (nx + 1) + i;
+            let k2 = (j+1) * (nx + 1) + i;
+            vecval.push((k1, k2, -1. / dx / dx));
+            vecval.push((k2, k1, -1. / dx / dx));
+        }
+    }
+
+    let mut m = skyrs::Sky::new(vecval);
 
     //displaymat(n, &m);
 
@@ -39,17 +57,11 @@ fn main() {
 }
 
 #[allow(dead_code)]
-fn displaymat(n: usize, m: &sparse21::Matrix) {
-    for i in 0..n {
-        for j in 0..n {
-            let val = match m.get(i, j) {
-                Some(v) => v,
-                None => 0.,
-            };
-            print!("{} ", val);
-        }
-        println!();
-    }
+fn displaymat(m: &skyrs::Sky) {
+    println!("Matrix=");
+    m.print_coo();
+    println!("L-I+U");
+    m.print_lu();
 }
 
 /// Plot a 2D data set using matplotlib
